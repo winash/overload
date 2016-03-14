@@ -1,5 +1,11 @@
 # Overload #
 
+## TODO ##
+- Provide async support
+- Run the script using the bundled jmeter
+- Publish load reports
+- Provide a run script
+
 Overload is a tool to generate and run jmeter scripts in a declarative fashion
 
  A simple load test plan looks like this
