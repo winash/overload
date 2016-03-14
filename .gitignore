@@ -1,0 +1,11 @@
+*.sw*
+*.pyc
+.*~
+*~
+*.iml
+**/build/**
+.idea/**
+.gradle/**
+
+
+psql_*_local

@@ -1,0 +1,5 @@
+<BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+    <stringProp name="filename"></stringProp>
+    <stringProp name="parameters"></stringProp>
+    <boolProp name="resetInterpreter">true</boolProp>
+</BeanShellPreProcessor>
