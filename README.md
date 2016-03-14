@@ -22,7 +22,9 @@ test {
 }
  ```
 
- This will get translated to a Jmeter test like
+ This should get translated to a Jmeter test template as follows
+ 
+ 
  ```
  <jmeterTestPlan version="1.2" properties="2.5">
   <hashTree>
