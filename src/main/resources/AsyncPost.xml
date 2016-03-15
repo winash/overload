@@ -1,0 +1,111 @@
+<JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Async POST Sampler" enabled="true">
+    <stringProp name="cacheKey"></stringProp>
+    <stringProp name="filename"></stringProp>
+    <stringProp name="parameters">http://twilight-star-9033.getsandbox.com/users#{&quot;status&quot;:&quot;no&quot;}#Location#http://twilight-star-9033.getsandbox.com/users/@placeholder@#jobId#1000</stringProp>
+    <stringProp name="script">import org.apache.http.HttpEntity
+        import org.apache.http.HttpResponse
+        import org.apache.http.client.HttpClient
+        import org.apache.http.client.methods.HttpGet
+        import org.apache.http.client.methods.HttpPost
+        import org.apache.http.entity.StringEntity
+        import org.apache.http.impl.client.DefaultHttpClient
+        import org.apache.http.params.BasicHttpParams
+        import org.apache.http.params.HttpParams
+        import org.apache.http.util.EntityUtils
+        import org.apache.jmeter.samplers.SampleResult
+
+        import java.util.concurrent.CountDownLatch
+        import java.util.concurrent.TimeUnit
+
+
+        //Call the post api at args[0]
+
+        //Read the response header key from args[1], args[2] - split char, args[3] - index
+        // Split the response header at &apos;/&apos; and user the second parameter
+
+        //Call the callback_url at args[4] periodicallt till blockTime specified at args[5]
+
+        SampleResult sampleResult = new SampleResult()
+
+
+        sampleResult.sampleStart()
+
+        try{
+
+        def args = new String(args[0].decodeBase64())
+        args = args.split(&quot;#&quot;)
+        DefaultHttpClient httpClient = new DefaultHttpClient()
+        HttpPost postRequest = new HttpPost(args[0])
+
+        StringEntity input = new StringEntity(args[1])
+        input.setContentType(&apos;application/json&apos;)
+        postRequest.setEntity(input)
+
+        HttpResponse response = httpClient.execute(postRequest)
+
+        String[] locations = response.getFirstHeader(args[2]).getValue().split(&apos;/&apos;)
+        String parameter = locations[1]
+
+
+        String callBackLocation = args[3].replace(&apos;@placeholder@&apos;, parameter)
+
+        //Make the thread sleep for the acceptable amount of time needed to process
+        Thread.sleep(args[5].toInteger())
+
+        def status = new Status()
+
+        try {
+
+        makeGetRequest(callBackLocation, args[4], parameter, httpClient, status)
+        } catch (Exception e) {
+        throw new RuntimeException(e)
+        }
+
+        sampleResult.sampleEnd()
+
+        if (status.success) {
+        sampleResult.setSuccessful(true)
+        sampleResult.setResponseCodeOK()
+        sampleResult.setResponseMessageOK()
+
+        return sampleResult
+        } else {
+        // Caught by the engine causing the sample to fail
+        throw new RuntimeException()
+        }
+        } catch(Exception e){
+        throw new RuntimeException()
+        }
+
+        class Status {
+        boolean success = false
+
+        }
+
+        void makeGetRequest(final String callBackLocation,
+
+        final String paramKey, final String paramValue,
+        DefaultHttpClient httpClient, final Status status) {
+
+
+        try {
+        httpClient = new DefaultHttpClient()
+        HttpGet request = new HttpGet(callBackLocation)
+        HttpParams params = new BasicHttpParams()
+        params.setParameter(paramKey, paramValue)
+
+        HttpResponse response = httpClient.execute(request)
+
+        if (response.getStatusLine().getStatusCode() == 200) {
+        status.success = true
+        }
+
+        } catch (Exception e) {
+        throw e
+
+        }
+
+        }
+    </stringProp>
+    <stringProp name="scriptLanguage">groovy</stringProp>
+</JSR223Sampler>

@@ -39,22 +39,43 @@ class JMeterGet {
         def binding = new DSLBinding()
         def shell = new GroovyShell(binding)
 
-        shell.evaluate("""test {
-    plan("test google") {
-        userLoad([[count:20,rampup:30,hold:30,shutdown:10],[count:10,rampup:30,hold:30,shutdown:10]]) {
-            hit(url: 'requestb.in', port: 80,path:"/18mednu1") {
-                postJson("data: { title: \\'foo\\',\\r\\n        body: \\'bar\\',\\r\\n       userId: 1\\r\\n }")
+//        shell.evaluate("""test {
+//    plan("test google") {
+//        userLoad([[count:20,rampup:30,hold:30,shutdown:10],[count:10,rampup:30,hold:30,shutdown:10]]) {
+//            hit(url: 'requestb.in', port: 80,path:"/18mednu1") {
+//                postJson("data: { title: \\'foo\\',\\r\\n        body: \\'bar\\',\\r\\n       userId: 1\\r\\n }")
+//
+//                 auth(user:'admin',pass:'admin')
+//            }
+//        }
+//
+//
+//
+//    }
+//
+//http://twilight-star-9033.getsandbox.com/users#{&quot;status&quot;:&quot;no&quot;}#Location#http://twilight-star-9033.getsandbox.com/users/@placeholder@#jobId#1000
+//}""")
 
-                 auth(user:'admin',pass:'admin')
-            }
+        shell.evaluate("""
+test  {
+
+    plan("test async"){
+        userLoad([[count:20,rampup:30,hold:30,shutdown:10],[count:20,rampup:30,hold:30,shutdown:10]]) {
+            asyncPost(url:"http://twilight-star-9033.getsandbox.com/users"
+            ,data:"{\\"menu\\": {\\r\\n  \\"id\\": \\"file\\",\\r\\n  \\"value\\": \\"File\\",\\r\\n  \\"popup\\": {\\r\\n    \\"menuitem\\": [\\r\\n      {\\"value\\": \\"New\\", \\"onclick\\": \\"CreateNewDoc()\\"},\\r\\n      {\\"value\\": \\"Open\\", \\"onclick\\": \\"OpenDoc()\\"},\\r\\n      {\\"value\\": \\"Close\\", \\"onclick\\": \\"CloseDoc()\\"}\\r\\n    ]\\r\\n  }\\r\\n}}"
+            ,extract:"Location",callback:"http://twilight-star-9033.getsandbox.com/users/@placeholder",
+            key:"jobId",delay:"5000")
         }
-
-
-
     }
 
+}
 
-}""")
+""")
+
+
+
+
+
 
     }
 

@@ -129,6 +129,24 @@ class DSLBinding extends Binding {
 
 
 
+    def asyncPost(Map args){
+        if(!args){
+            throw new RuntimeException("Format error, see manual");
+        }
+        if(stack.peek().name != "userLoad" && stack.peek().name != "user"){
+            throw new RuntimeException("asyncPost can only be declared in a user/userLoad block");
+        }
+        def keys = ["url", "data", "extract", "callback", "key", "delay"]
+        keys.each {
+            if(!args.containsKey(it))
+                throw new RuntimeException("All keys ${keys} needed");
+            if(!args.get(it))
+                throw new RuntimeException("All values for ${keys} needed");
+        }
+        AsyncPost.newInstance.build(stack.peek().node,args)
+    }
+
+
     class Pair{
         String name
         Node node

@@ -56,7 +56,7 @@ trait Builder {
         nb.call().hashTree()
     }
 
-    abstract Node build(Node Node, Map parameters)
+    abstract Node build(Node node, Map parameters)
 
 
 }

@@ -16,6 +16,9 @@ repositories {
 }
 
 dependencies {
+    compile 'org.apache.jmeter:ApacheJMeter_java:2.11'
+    compile 'org.apache.jmeter:ApacheJMeter_core:2.11'
+    compile 'org.apache.httpcomponents:httpclient:4.0'
     compile 'org.apache.ant:ant:1.9.6'
     compile 'com.google.guava:guava:18.0'
     compile 'org.codehaus.groovy:groovy-all:2.4.5'
