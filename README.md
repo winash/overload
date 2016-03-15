@@ -1,7 +1,8 @@
 # Overload #
 
 ## TODO ##
-- Provide async support
+- Provide async support for POST (Done)
+- Provide async support for PUT
 - Run the script using the bundled jmeter
 - Publish load reports
 - Provide a run script
@@ -23,8 +24,8 @@ test {
  ```
 
  This should get translated to a Jmeter test template as follows
- 
- 
+
+
  ```
  <jmeterTestPlan version="1.2" properties="2.5">
   <hashTree>
